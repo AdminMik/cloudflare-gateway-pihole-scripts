@@ -17,8 +17,9 @@ env:
 
 jobs:
   cgps:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,15 +67,5 @@ jobs:
         env:
           PING_URL: ${{ secrets.PING_URL }}
 
-      - name: Generate
-        run: |
-          echo "Temp" >> ./temp.txt
-      - name: Keep
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: keep
-          skip_checkout: true
-          skip_dirty_check: true
-          push_options: '--force'
-          file_pattern: ./temp.txt
-          commit_message: Bump
+      - name: Keep workflow alive
+        uses: gautamkrishnar/keepalive-workflow@v1
